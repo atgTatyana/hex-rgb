@@ -5,12 +5,16 @@ interface IForm {
 }
 
 export const Converter = () => {
-  const [form, setForm] = useState<IForm>({
+    const [form, setForm] = useState<IForm>({
 		color: '#',
 	})
 	const [colorRGB, setColorRGB] = useState<string>('');
 
-	const body: HTMLBodyElement = document.querySelector("body");
+	// const body: HTMLBodyElement | null = document.querySelector("body");
+    // надо делать проверку, что body существует
+
+	const body = document.querySelector("body") as HTMLBodyElement;
+    // если body точно существует
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -21,11 +25,15 @@ export const Converter = () => {
 			const g = parseInt(color.slice(3,5), 16);
 			const b = parseInt(color.slice(5), 16);
 			setColorRGB(`rgb(${r},${g},${b})`);
-			body.style.background = color;
+            // if (body) {
+                body.style.background = color;
+            // }
 			
 		} else {
 			setColorRGB('Ошибка!');
-			body.style.background = 'red';
+            // if (body) {
+                body.style.background = 'red';
+            // }
 		}
 	}
 
@@ -37,14 +45,14 @@ export const Converter = () => {
 		}))
 	}
 
-  return (
+    return (
 		<>
 			<form onSubmit={handleSubmit}>
-        <input type='text' name='color' value={form.color} onChange={handleChange} />
+                <input type='text' name='color' value={form.color} onChange={handleChange} />
 			</form>
 			<div className="rgb">
 				<span>{colorRGB}</span>
 			</div>
 		</>
-  )
+    )
 }
